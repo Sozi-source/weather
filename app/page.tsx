@@ -7,7 +7,7 @@ const Home: React.FC=()=>{
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("London")
 
-const apiurl = `http://api.weatherapi.com/v1/current.json?key=4c7cb41998584736bfb182219252111&q=${search}&aqi=no`
+const apiurl = `https://api.weatherapi.com/v1/current.json?key=4c7cb41998584736bfb182219252111&q=${search}&aqi=no`
 
 
 
