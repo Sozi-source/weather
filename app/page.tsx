@@ -59,14 +59,14 @@ const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
           </button>
         </form>
 
-        {loading && <p className="text-center text-gray-500 animate-pulse">Loading...</p>}
+        {loading && <p className="text-center text-gray-500 animate-pulse text-lg text-green-500">Loading...</p>}
 
         {weather && !loading && (
           <div className="text-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 text-gray-800">
               {weather.location.name}, {weather.location.country}
             </h1>
-            <p className="text-sm sm:text-base text-gray-400 mb-4">{weather.location.localtime}</p>
+            <p className="text-sm sm:text-base text-gray-400 mb-4 text-gray-600">{weather.location.localtime}</p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center mb-6 gap-4">
               <img
@@ -75,29 +75,29 @@ const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
                 className="w-24 h-24 sm:w-28 sm:h-28"
               />
               <div className="text-center sm:text-left">
-                <p className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
+                <p className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900">
                   {weather.current.temp_c}°C
                 </p>
-                <p className="text-gray-500">Feels like {weather.current.feelslike_c}°C</p>
+                <p className="text-gray-500 text-gray-600">Feels like {weather.current.feelslike_c}°C</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mt-6">
               <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
                 <p className="text-gray-500 text-sm">Condition</p>
-                <p className="font-semibold">{weather.current.condition.text}</p>
+                <p className="font-semibold text-gray-800">{weather.current.condition.text}</p>
               </div>
               <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
                 <p className="text-gray-500 text-sm">Humidity</p>
-                <p className="font-semibold">{weather.current.humidity}%</p>
+                <p className="font-semibold text-gray-800">{weather.current.humidity}%</p>
               </div>
               <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
                 <p className="text-gray-500 text-sm">Wind</p>
-                <p className="font-semibold">{weather.current.wind_kph} kph {weather.current.wind_dir}</p>
+                <p className="font-semibold text-gray-800">{weather.current.wind_kph} kph {weather.current.wind_dir}</p>
               </div>
               <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
                 <p className="text-gray-500 text-sm">Last Updated</p>
-                <p className="font-semibold">{weather.current.last_updated}</p>
+                <p className="font-semibold text-gray-800">{weather.current.last_updated}</p>
               </div>
             </div>
           </div>
