@@ -1,65 +1,109 @@
-import Image from "next/image";
+'use client'
+import { useEffect, useState } from "react"
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+const Home: React.FC=()=>{
+
+  const [weather, setWeather] = useState<weatherData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("London")
+
+const apiurl = `http://api.weatherapi.com/v1/current.json?key=4c7cb41998584736bfb182219252111&q=${search}&aqi=no`
+
+
+
+  const fetchweather=async(city: string)=>{
+    setLoading(true)
+
+    try {
+    const response = await fetch(apiurl)
+    const data = await response.json()
+    setWeather(data)
+    setLoading(false)
+         
+    } catch (error) {
+      console.error("Error fetching weather data:", error)
+      setLoading(false)
+    }finally {
+      setLoading(false)
+    }
+  }
+ 
+  useEffect(()=>{
+    fetchweather(search)
+  }, [])
+const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
+  e.preventDefault()
+  fetchweather(search)
 }
+
+  
+  if (loading) return <p>Loading...</p>
+  
+  return(
+     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 p-4">
+      <div className="bg-white shadow-2xl rounded-3xl p-6 max-w-md w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+        {/* Search Form */}
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 mb-6">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Enter city name..."
+            className="text-black font-semibold flex-1 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          />
+          <button
+            type="submit"
+            className="bg-indigo-500 text-white px-6 py-3 rounded-xl hover:bg-indigo-600 transition-colors"
+          >
+            Search
+          </button>
+        </form>
+
+        {loading && <p className="text-center text-gray-500 animate-pulse">Loading...</p>}
+
+        {weather && !loading && (
+          <div className="text-center">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+              {weather.location.name}, {weather.location.country}
+            </h1>
+            <p className="text-sm sm:text-base text-gray-400 mb-4">{weather.location.localtime}</p>
+
+            <div className="flex flex-col sm:flex-row justify-center items-center mb-6 gap-4">
+              <img
+                src={weather.current.condition.icon}
+                alt={weather.current.condition.text}
+                className="w-24 h-24 sm:w-28 sm:h-28"
+              />
+              <div className="text-center sm:text-left">
+                <p className="text-4xl sm:text-5xl md:text-6xl font-extrabold">
+                  {weather.current.temp_c}°C
+                </p>
+                <p className="text-gray-500">Feels like {weather.current.feelslike_c}°C</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mt-6">
+              <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
+                <p className="text-gray-500 text-sm">Condition</p>
+                <p className="font-semibold">{weather.current.condition.text}</p>
+              </div>
+              <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
+                <p className="text-gray-500 text-sm">Humidity</p>
+                <p className="font-semibold">{weather.current.humidity}%</p>
+              </div>
+              <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
+                <p className="text-gray-500 text-sm">Wind</p>
+                <p className="font-semibold">{weather.current.wind_kph} kph {weather.current.wind_dir}</p>
+              </div>
+              <div className="bg-indigo-50 p-4 rounded-2xl shadow-sm">
+                <p className="text-gray-500 text-sm">Last Updated</p>
+                <p className="font-semibold">{weather.current.last_updated}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+export default Home;
