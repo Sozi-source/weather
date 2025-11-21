@@ -41,7 +41,7 @@ const handleSearch=(e: React.FormEvent<HTMLFormElement>)=>{
   if (loading) return <p>Loading...</p>
   
   return(
-     <div className="flex justify-center items-center bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 p-4">
+     <div className="flex justify-center items-center bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 p-4 md:h-[75vh]">
       <div className="bg-white shadow-2xl rounded-3xl p-6 max-w-md w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl">
         {/* Search Form */}
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 mb-6">
