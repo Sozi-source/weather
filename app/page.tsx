@@ -6,7 +6,7 @@ const Home: React.FC=()=>{
 
   const [weather, setWeather] = useState<weatherData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState("London")
+  const [search, setSearch] = useState("Thika")
 
 const apiurl = `https://api.weatherapi.com/v1/current.json?key=4c7cb41998584736bfb182219252111&q=${search}&aqi=no`
 
